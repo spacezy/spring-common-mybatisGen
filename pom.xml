@@ -1,0 +1,37 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.spring.mybatisGen</groupId>
+  <artifactId>spring-common-mybatisGen</artifactId>
+   <packaging>jar</packaging>
+  <version>0.0.1-SNAPSHOT</version> 
+  	<properties>
+		<file.encoding>UTF-8</file.encoding>
+		<org.springframework.version>3.2.2.RELEASE</org.springframework.version>
+		<java.version>1.6</java.version>
+	</properties>
+	<dependencies>
+	<!-- 基础设施 -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+	            
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+	</dependencies>	
+</project>

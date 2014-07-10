@@ -1,0 +1,2 @@
+import java.util.Date;
+import cn.bidlink.framework.core.model.BaseModel;
