@@ -157,7 +157,6 @@ public class GeneratorFacade {
 		}
 		
 		public void processByTable(String tableName, String templateRootDir, boolean isDelete) throws Exception {
-			GeneratorFacade.tableList.add(tableName);
 			if ("*".equals(tableName)) {
 				if (isDelete)
 					deleteByAllTable(templateRootDir);

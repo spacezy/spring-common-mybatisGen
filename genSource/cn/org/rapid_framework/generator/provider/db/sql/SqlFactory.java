@@ -226,7 +226,7 @@ public class SqlFactory {
 				}
 				result.add(param);			
 			}
-			GLogger.perf("parseForSqlParameters() cost:"+(System.currentTimeMillis()- start));
+			logger.trace("parseForSqlParameters() cost:"+(System.currentTimeMillis()- start));
 			return result;
 	    
 		}

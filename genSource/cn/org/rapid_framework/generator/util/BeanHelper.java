@@ -36,7 +36,7 @@ public class BeanHelper {
 					map.put(name, readMethod.invoke(obj, new Object[]{}));
 					long cost = start - System.currentTimeMillis();
 				}catch(Exception e){
-					log.warn("error get property value,name:"+name+" on bean:"+obj,e);
+					logger.warn("error get property value,name:"+name+" on bean:"+obj,e);
 				}
             }
 		}
