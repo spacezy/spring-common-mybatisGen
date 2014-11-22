@@ -4,7 +4,6 @@ package cn.org.rapid_framework.generator.provider.db.table;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -17,13 +16,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
+import cn.org.rapid_framework.generator.GeneratorFacade;
 import cn.org.rapid_framework.generator.GeneratorProperties;
 import cn.org.rapid_framework.generator.provider.db.DataSourceProvider;
 import cn.org.rapid_framework.generator.provider.db.table.model.Column;
 import cn.org.rapid_framework.generator.provider.db.table.model.Table;
 import cn.org.rapid_framework.generator.util.BeanHelper;
 import cn.org.rapid_framework.generator.util.FileHelper;
-import cn.org.rapid_framework.generator.util.GLogger;
 import cn.org.rapid_framework.generator.util.StringHelper;
 import cn.org.rapid_framework.generator.util.XMLHelper;
 import cn.org.rapid_framework.generator.util.XMLHelper.NodeData;
@@ -39,7 +40,7 @@ import cn.org.rapid_framework.generator.util.XMLHelper.NodeData;
  * @email badqiu(a)gmail.com
  */
 public class TableFactory {
-	
+	private static  Logger logger=Logger.getLogger(TableFactory.class);
 	private DbHelper dbHelper = new DbHelper();
 	private static TableFactory instance = null;
 	
@@ -181,7 +182,7 @@ public class TableFactory {
 	         }
 	      } catch (SQLException e) {
 	         String databaseStructure = getDatabaseStructureInfo();
-	         GLogger.error(e.getMessage(), e);
+	         logger.error(e.getMessage(), e);
 	         throw new RuntimeException("Exception in getting synonym owner " + databaseStructure);
 	      } finally {
 	         dbHelper.close(rs,ps);
@@ -206,7 +207,7 @@ public class TableFactory {
 	            sb.append("  ").append(schemaRs.getString("TABLE_SCHEM")).append(nl);
 	         }
 	      } catch (SQLException e2) {
-	         GLogger.warn("Couldn't get schemas", e2);
+	         logger.warn("Couldn't get schemas", e2);
 	         sb.append("  ?? Couldn't get schemas ??").append(nl);
 	      } finally {
 	         dbHelper.close(schemaRs,null);
@@ -219,7 +220,7 @@ public class TableFactory {
 	            sb.append("  ").append(catalogRs.getString("TABLE_CAT")).append(nl);
 	         }
 	      } catch (SQLException e2) {
-	         GLogger.warn("Couldn't get catalogs", e2);
+	         logger.warn("Couldn't get catalogs", e2);
 	         sb.append("  ?? Couldn't get catalogs ??").append(nl);
 	      } finally {
 	         dbHelper.close(catalogRs,null);
@@ -232,11 +233,9 @@ public class TableFactory {
 	}
 	
 	private void retriveTableColumns(Table table) throws SQLException {
-	      GLogger.trace("-------setColumns(" + table.getSqlName() + ")");
-
+	      logger.trace("setColumns(" + table.getSqlName() + ")");
 	      List primaryKeys = getTablePrimaryKeys(table);
 	      table.setPrimaryKeyColumns(primaryKeys);
-	      
 	      // get the indices and unique columns
 	      List indices = new LinkedList();
 	      // maps index names to a list of columns in the index
@@ -244,9 +243,7 @@ public class TableFactory {
 	      // maps column names to the index name.
 	      Map uniqueColumns = new HashMap();
 	      ResultSet indexRs = null;
-
 	      try {
-
 	         if (table.getOwnerSynonymName() != null) {
 	            indexRs = getMetaData().getIndexInfo(getCatalog(), table.getOwnerSynonymName(), table.getSqlName(), false, true);
 	         }
@@ -256,7 +253,7 @@ public class TableFactory {
 	         while (indexRs.next()) {
 	            String columnName = indexRs.getString("COLUMN_NAME");
 	            if (columnName != null) {
-	               GLogger.trace("index:" + columnName);
+	               logger.trace("index:" + columnName);
 	               indices.add(columnName);
 	            }
 
@@ -272,7 +269,7 @@ public class TableFactory {
 	               }
 	               l.add(columnName);
 	               uniqueIndices.put(columnName, indexName);
-	               GLogger.trace("unique:" + columnName + " (" + indexName + ")");
+	               logger.debug("unique:" + columnName + " (" + indexName + ")");
 	            }
 	         }
 	      } catch (Throwable t) {
@@ -291,7 +288,7 @@ public class TableFactory {
 
 	      // In case none of the columns were primary keys, issue a warning.
 	      if (primaryKeys.size() == 0) {
-	         GLogger.warn("WARNING: The JDBC driver didn't report any primary key columns in " + table.getSqlName());
+	         logger.warn("WARNING: The JDBC driver didn't report any primary key columns in " + table.getSqlName());
 	      }
 	}
 
@@ -310,8 +307,6 @@ public class TableFactory {
 	         if(remarks == null && dbHelper.isOracleDataBase()) {
 	        	 remarks = getOracleColumnComments(table.getSqlName(), columnName);
 	         }
-	         
-	         // if columnNoNulls or columnNullableUnknown assume "not nullable"
 	         boolean isNullable = (DatabaseMetaData.columnNullable == columnRs.getInt("NULLABLE"));
 	         int size = columnRs.getInt("COLUMN_SIZE");
 	         int decimalDigits = columnRs.getInt("DECIMAL_DIGITS");
@@ -326,7 +321,7 @@ public class TableFactory {
 
 	         boolean isUnique = columnsInUniqueIndex != null && columnsInUniqueIndex.size() == 1;
 	         if (isUnique) {
-	            GLogger.trace("unique column:" + columnName);
+	            logger.trace("unique column:" + columnName);
 	         }
 	         Column column = new Column(
 	               table,
@@ -341,8 +336,7 @@ public class TableFactory {
 	               isUnique,
 	               columnDefaultValue,
 	               remarks);
-	         //TODO sl_列注释判断设置是否生成日期格式化
-	         
+	         //TODO 列注释判断设置是否生成日期格式化
 	         BeanHelper.copyProperties(column,TableOverrideValuesProvider.getColumnOverrideValues(table,column));
 	         columns.add(column);
 	    }
@@ -372,7 +366,7 @@ public class TableFactory {
 	      }
 	      while (primaryKeyRs.next()) {
 	         String columnName = primaryKeyRs.getString("COLUMN_NAME");
-	         GLogger.trace("primary key:" + columnName);
+	         logger.trace("primary key:" + columnName);
 	         primaryKeys.add(columnName);
 	      }
 	      primaryKeyRs.close();
@@ -393,23 +387,27 @@ public class TableFactory {
 	public static class TableOverrideValuesProvider {
 		
 		private static Map getTableOverrideValues(String tableSqlName){
-			NodeData nd = getTableConfigXmlNodeData(tableSqlName);
-			if(nd == null) {
-			    return new HashMap();
-			}
-			return nd == null ? new HashMap() : nd.attributes;
+			 if (tableSqlName.equals("*") || tableSqlName.equals(GeneratorFacade.GENTABNAME)) {
+				 NodeData nd = getTableConfigXmlNodeData(tableSqlName);
+					if(nd != null) {
+					    return  nd.attributes;
+					}
+			 }
+			return  new HashMap();
 		}
 	
 		private static Map getColumnOverrideValues(Table table, Column column) {
-			NodeData root = getTableConfigXmlNodeData(table.getSqlName());
-			if(root != null){
-				 for(NodeData item : root.childs) {
-					 if(item.nodeName.equals("column")) {
-					     if(column.getSqlName().equalsIgnoreCase(item.attributes.get("sqlName"))) {
-					         return item.attributes;
+			 if (table.getSqlName().equals("*") || table.getSqlName().equals(GeneratorFacade.GENTABNAME)) {
+				 NodeData root = getTableConfigXmlNodeData(table.getSqlName());
+					if(root != null){
+						 for(NodeData item : root.childs) {
+							 if(item.nodeName.equals("column")) {
+							     if(column.getSqlName().equalsIgnoreCase(item.attributes.get("sqlName"))) {
+							         return item.attributes;
+							     }
+							 }
 					     }
-					 }
-			     }
+					}
 			}
 			return new HashMap();
 		}
@@ -428,10 +426,10 @@ public class TableFactory {
 		private static NodeData getTableConfigXmlNodeData0(String tableSqlName) {
 			try {
 				File file = FileHelper.getFileByClassLoader("generator_config/table/"+tableSqlName+".xml");
-				GLogger.trace("getTableConfigXml() load nodeData by tableSqlName:"+tableSqlName+".xml");
+				logger.debug("getTableConfigXml() load nodeData by tableSqlName:"+tableSqlName+".xml");
 				return new XMLHelper().parseXML(file);
 			}catch(Exception e) {//ignore
-				GLogger.trace("not found config xml for table:"+tableSqlName+", exception:"+e);
+				logger.debug("not found config xml for table:"+tableSqlName+", exception:"+e);
 				return null;
 			}
 		}

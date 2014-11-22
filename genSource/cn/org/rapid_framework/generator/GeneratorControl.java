@@ -14,11 +14,13 @@ import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
+import main.GeneratorMain;
+
+import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 
 import cn.org.rapid_framework.generator.provider.db.DataSourceProvider;
 import cn.org.rapid_framework.generator.util.FileHelper;
-import cn.org.rapid_framework.generator.util.GLogger;
 import cn.org.rapid_framework.generator.util.IOHelper;
 import cn.org.rapid_framework.generator.util.SqlExecutorHelper;
 import cn.org.rapid_framework.generator.util.StringHelper;
@@ -44,6 +46,7 @@ import freemarker.ext.dom.NodeModel;
  *
  */
 public class GeneratorControl {
+	private static  Logger logger=Logger.getLogger(GeneratorControl.class);
 	private boolean isOverride = Boolean.parseBoolean(GeneratorProperties.getProperty("override","false")); 
 	private boolean isAppend = false; //no pass
 	private boolean ignoreOutput = false; 
@@ -118,16 +121,16 @@ public class GeneratorControl {
 			}
 			
 			if(deleteGeneratedFile) {
-				GLogger.println("[delete gg.generateFile()] file:"+realOutputFile+" by template:"+getSourceFile());
+				logger.info("[delete gg.generateFile()] file:"+realOutputFile+" by template:"+getSourceFile());
 				new File(realOutputFile).delete();
 			}else {
 				File file = new File(realOutputFile);
 				FileHelper.parnetMkdir(file);
-				GLogger.println("[gg.generateFile()] outputFile:"+realOutputFile+" append:"+append+" by template:"+getSourceFile());
+				logger.info("[gg.generateFile()] outputFile:"+realOutputFile+" append:"+append+" by template:"+getSourceFile());
 				IOHelper.saveFile(file, content,getOutputEncoding(),append);
 			}
 		} catch (Exception e) {
-			GLogger.warn("gg.generateFile() occer error,outputFile:"+outputFile+" caused by:"+e,e);
+			logger.warn("gg.generateFile() occer error,outputFile:"+outputFile+" caused by:"+e,e);
 			throw new RuntimeException("gg.generateFile() occer error,outputFile:"+outputFile+" caused by:"+e,e);
 		}
 	}

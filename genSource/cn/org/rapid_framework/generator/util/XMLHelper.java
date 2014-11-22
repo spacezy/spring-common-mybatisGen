@@ -82,8 +82,6 @@ public class XMLHelper {
         public String nodeValue;
         public String innerXML;
         public String outerXML;
-//        public String innerText;
-//        public String outerText;
         public Map<String,String> attributes = new HashMap<String,String>();
         public List<NodeData> childs = new ArrayList<NodeData>();
         

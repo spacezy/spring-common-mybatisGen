@@ -8,14 +8,17 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import main.GeneratorMain;
+
+import org.apache.log4j.Logger;
+
 import cn.org.rapid_framework.generator.provider.db.table.TableFactory.DatabaseMetaDataUtils;
-import cn.org.rapid_framework.generator.util.GLogger;
 import cn.org.rapid_framework.generator.util.IOHelper;
 import cn.org.rapid_framework.generator.util.StringHelper;
 
 
 public class SqlParseHelper {
-
+	private static  Logger logger=Logger.getLogger(SqlParseHelper.class);
 	public static class NameWithAlias {
 		private String name;
 		private String alias;
@@ -429,7 +432,7 @@ public class SqlParseHelper {
 	}
 
 	private static void warn(String sql, int i, SQLException error) {
-		GLogger.warn("error on set parametet index:" + i + " cause:" + error
+		logger.warn("error on set parametet index:" + i + " cause:" + error
 				+ " sql:" + sql);
 	}
 }

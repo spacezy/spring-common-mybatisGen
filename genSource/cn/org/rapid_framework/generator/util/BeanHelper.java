@@ -14,8 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 
 public class BeanHelper {
+	private static  Logger logger=Logger.getLogger(BeanHelper.class);
 	/**
 	 * @see #org.apache.commons.beanutils.PropertyUtils.describe(obj)
 	 */ 
@@ -33,7 +36,7 @@ public class BeanHelper {
 					map.put(name, readMethod.invoke(obj, new Object[]{}));
 					long cost = start - System.currentTimeMillis();
 				}catch(Exception e){
-					GLogger.warn("error get property value,name:"+name+" on bean:"+obj,e);
+					log.warn("error get property value,name:"+name+" on bean:"+obj,e);
 				}
             }
 		}

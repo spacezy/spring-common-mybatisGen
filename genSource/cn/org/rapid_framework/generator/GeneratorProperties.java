@@ -1,5 +1,4 @@
 package cn.org.rapid_framework.generator;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -7,23 +6,21 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
-import cn.org.rapid_framework.generator.util.GLogger;
+import org.apache.log4j.Logger;
+
 import cn.org.rapid_framework.generator.util.PropertiesHelper;
 import cn.org.rapid_framework.generator.util.PropertyPlaceholderHelper;
 import cn.org.rapid_framework.generator.util.PropertyPlaceholderHelper.PropertyPlaceholderConfigurerResolver;
 import cn.org.rapid_framework.generator.util.typemapping.DatabaseTypeUtils;
-
-
 /**
  * 生成器配置类
  * 用于装载generator.properties,generator.xml文件
- * @author badqiu
- * @email badqiu(a)gmail.com
  */
 public class GeneratorProperties {
+	private static  Logger logger=Logger.getLogger(GeneratorProperties.class);
 	static PropertyPlaceholderHelper helper = new PropertyPlaceholderHelper("${", "}", ":", false);
 	
-	static final String PROPERTIES_FILE_NAMES[] = new String[]{"generator.properties","generator.xml"};
+	private static final String propertiesFileNames[] = new String[]{"generator.properties","generator.xml"};
 	
 	static PropertiesHelper props = new PropertiesHelper(new Properties(),true);
 	private GeneratorProperties(){}
@@ -33,25 +30,24 @@ public class GeneratorProperties {
 	
 	public static void reload() {
 		try {
-			GLogger.println("Start Load GeneratorPropeties from classpath:"+Arrays.toString(PROPERTIES_FILE_NAMES));
-			Properties p = new Properties();
-			String[] loadedFiles = PropertiesHelper.loadAllPropertiesFromClassLoader(p,PROPERTIES_FILE_NAMES);
-			GLogger.println("GeneratorPropeties Load Success,files:"+Arrays.toString(loadedFiles));
+			logger.info("Start Load GeneratorPropeties from classpath:"+Arrays.toString(propertiesFileNames));
+			Properties properties = new Properties();
+			String[] loadedFiles = PropertiesHelper.loadAllPropertiesFromClassLoader(properties,propertiesFileNames);
+			logger.info("GeneratorPropeties Load Success,files:"+Arrays.toString(loadedFiles));
+			setSepicalProperties(properties, loadedFiles);
 			
-			setSepicalProperties(p, loadedFiles);
-			
-			setProperties(p);
+			setProperties(properties);
 		}catch(IOException e) {
-			throw new RuntimeException("Load "+PROPERTIES_FILE_NAMES+" error",e);
+			throw new RuntimeException("Load "+propertiesFileNames+" error",e);
 		}
 	}
 
-	private static void setSepicalProperties(Properties p, String[] loadedFiles) {
-		p.put("databaseType", getDatabaseType(p,"databaseType"));
+	private static void setSepicalProperties(Properties properties, String[] loadedFiles) {
+		properties.put("databaseType", getDatabaseType(properties,"databaseType"));
 		if(loadedFiles != null && loadedFiles.length > 0) {
-			String basedir = p.getProperty("basedir");
+			String basedir = properties.getProperty("basedir");
 			if(basedir != null && basedir.startsWith(".")) {
-				p.setProperty("basedir", new File(new File(loadedFiles[0]).getParent(),basedir).getAbsolutePath());
+				properties.setProperty("basedir", new File(new File(loadedFiles[0]).getParent(),basedir).getAbsolutePath());
 			}
 		}
 	}
@@ -66,16 +62,12 @@ public class GeneratorProperties {
         Properties autoReplaceProperties = new Properties();
         for(Object key : getProperties().keySet()) {
             String dir_key = key.toString()+"_dir";
-//            if(props.entrySet().contains(dir_key)) {
-//                continue;
-//            }
             String value = props.getProperty(key.toString());
             String dir_value = value.toString().replace('.', '/');
             autoReplaceProperties.put(dir_key, dir_value);           
         }
         return autoReplaceProperties;
     }
-	
 	public static Properties getProperties() {
 		return getHelper().getProperties();
 	}
@@ -111,7 +103,7 @@ public class GeneratorProperties {
 	public static void setProperty(String key,String value) {
 		value = resolveProperty(value,getProperties());
 		key = resolveProperty(key,getProperties());
-	    GLogger.println("[setProperty()] "+key+"="+value);
+	    logger.info("[setProperty()] "+key+"="+value);
 		getHelper().setProperty(key, value);
 		String dir_value = value.toString().replace('.', '/');
 		getHelper().getProperties().put(key+"_dir", dir_value);
@@ -137,11 +129,10 @@ public class GeneratorProperties {
 		props = new PropertiesHelper(resolveProperties(inputProps),true);
         for(Iterator it = props.entrySet().iterator();it.hasNext();) {
             Map.Entry entry = (Map.Entry)it.next();
-            GLogger.println("[Property] "+entry.getKey()+"="+entry.getValue());
+            logger.debug("[Property] "+entry.getKey()+"="+entry.getValue());
         }
-        GLogger.println("");
         
-        GLogger.println("[Auto Replace] [.] => [/] on generator.properties, key=source_key+'_dir', For example: pkg=com.company ==> pkg_dir=com/company  \n");
+        logger.info("[Auto Replace] [.] => [/] on generator.properties, key=source_key+'_dir', For example: pkg=com.company ==> pkg_dir=com/company  \n");
         Properties dirProperties = autoReplacePropertiesValue2DirValue(props.getProperties());
         props.getProperties().putAll(dirProperties);
 	}

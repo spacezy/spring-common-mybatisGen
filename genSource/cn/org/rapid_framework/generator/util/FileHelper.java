@@ -15,6 +15,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+
 import cn.org.rapid_framework.generator.GeneratorProperties;
 /**
  * 
@@ -153,60 +156,6 @@ public class FileHelper {
             return filename.substring(index + 1);
         }
     }
-    
-	   //-----------------------------------------------------------------------
-    /**
-     * Deletes a directory recursively. 
-     *
-     * @param directory  directory to delete
-     * @throws IOException in case deletion is unsuccessful
-     */
-    public static void deleteDirectory(File directory) throws IOException {
-        if (!directory.exists()) {
-            return;
-        }
-
-        cleanDirectory(directory);
-        if (!directory.delete()) {
-            String message =
-                "Unable to delete directory " + directory + ".";
-            throw new IOException(message);
-        }
-    }
-
-    /**
-     * Deletes a file, never throwing an exception. If file is a directory, delete it and all sub-directories.
-     * <p>
-     * The difference between File.delete() and this method are:
-     * <ul>
-     * <li>A directory to be deleted does not have to be empty.</li>
-     * <li>No exceptions are thrown when a file or directory cannot be deleted.</li>
-     * </ul>
-     *
-     * @param file  file or directory to delete, can be <code>null</code>
-     * @return <code>true</code> if the file or directory was deleted, otherwise
-     * <code>false</code>
-     *
-     * @since Commons IO 1.4
-     */
-    public static boolean deleteQuietly(File file) {
-        if (file == null) {
-            return false;
-        }
-        try {
-            if (file.isDirectory()) {
-                cleanDirectory(file);
-            }
-        } catch (Exception e) {
-        }
-
-        try {
-            return file.delete();
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     /**
      * Cleans a directory without deleting it.
      *
@@ -246,7 +195,7 @@ public class FileHelper {
 
     public static void forceDelete(File file) throws IOException {
         if (file.isDirectory()) {
-            deleteDirectory(file);
+            FileUtils.deleteDirectory(file);
         } else {
             boolean filePresent = file.exists();
             if (!file.delete()) {

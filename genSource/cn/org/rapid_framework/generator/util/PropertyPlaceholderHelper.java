@@ -20,6 +20,8 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 
 
 /**
@@ -30,13 +32,11 @@ import java.util.Set;
  * user-supplied values. <p> Values for substitution can be supplied using a {@link Properties} instance or
  * using a {@link PlaceholderResolver}.
  * 
- * @author Juergen Hoeller
- * @author Rob Harrop
  * @since 3.0
  */
 public class PropertyPlaceholderHelper {
-
-
+	private static  Logger logger=Logger.getLogger(PropertyPlaceholderHelper.class);
+	
 	private final String placeholderPrefix;
 
 	private final String placeholderSuffix;
@@ -138,7 +138,7 @@ public class PropertyPlaceholderHelper {
 					propVal = parseStringValue(propVal, placeholderResolver, visitedPlaceholders);
 					buf.replace(startIndex, endIndex + this.placeholderSuffix.length(), propVal);
 
-					GLogger.trace("Resolved placeholder '" + placeholder + "'");
+					logger.trace("Resolved placeholder '" + placeholder + "'");
 
 					startIndex = buf.indexOf(this.placeholderPrefix, startIndex + propVal.length());
 				}

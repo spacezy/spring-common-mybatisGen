@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import cn.org.rapid_framework.generator.provider.db.DataSourceProvider;
 import cn.org.rapid_framework.generator.provider.db.sql.model.Sql;
 import cn.org.rapid_framework.generator.provider.db.sql.model.SqlParameter;
@@ -22,7 +24,6 @@ import cn.org.rapid_framework.generator.provider.db.table.TableFactory.NotFoundT
 import cn.org.rapid_framework.generator.provider.db.table.model.Column;
 import cn.org.rapid_framework.generator.provider.db.table.model.Table;
 import cn.org.rapid_framework.generator.util.BeanHelper;
-import cn.org.rapid_framework.generator.util.GLogger;
 import cn.org.rapid_framework.generator.util.StringHelper;
 import cn.org.rapid_framework.generator.util.sqlparse.BasicSqlFormatter;
 import cn.org.rapid_framework.generator.util.sqlparse.NamedParameterUtils;
@@ -44,7 +45,7 @@ import cn.org.rapid_framework.generator.util.typemapping.JdbcType;
  *
  */
 public class SqlFactory {
-    
+	private static  Logger logger=Logger.getLogger(SqlFactory.class);
     private List<SqlParameter> customParameters = new ArrayList<SqlParameter>();
     
     public SqlFactory() {
@@ -66,11 +67,11 @@ public class SqlFactory {
         Sql sql = new Sql();
         sql.setSourceSql(sourceSql);
         sql.setExecuteSql(executeSql);
-        GLogger.debug("\n*******************************");
-        GLogger.debug("sourceSql  :"+sql.getSourceSql());
-        GLogger.debug("namedSql  :"+namedSql);
-        GLogger.debug("executeSql :"+sql.getExecuteSql());
-        GLogger.debug("*********************************");
+        logger.debug("\n*******************************");
+        logger.debug("sourceSql  :"+sql.getSourceSql());
+        logger.debug("namedSql  :"+namedSql);
+        logger.debug("executeSql :"+sql.getExecuteSql());
+        logger.debug("*********************************");
         
         Connection conn = DataSourceProvider.getConnection();
         try {
@@ -148,10 +149,10 @@ public class SqlFactory {
 			    if(column == null || column.getSqlType() != m.getColumnType()) {
 			        //可以再尝试解析sql得到 column以解决 password as pwd找不到column问题
 			        column = newColumn(table,m);
-			        GLogger.trace("not found column:"+m.getColumnNameOrLabel()+" on table:"+table.getSqlName()+" "+BeanHelper.describe(column));
+			        logger.debug("not found column:"+m.getColumnNameOrLabel()+" on table:"+table.getSqlName()+" "+BeanHelper.describe(column));
 			        //isInSameTable以此种判断为错误
 			    }else {
-			    	GLogger.trace("found column:"+m.getColumnNameOrLabel()+" on table:"+table.getSqlName()+" "+BeanHelper.describe(column));
+			    	logger.debug("found column:"+m.getColumnNameOrLabel()+" on table:"+table.getSqlName()+" "+BeanHelper.describe(column));
 			    }
 			    return column;
 			}else {
@@ -162,7 +163,7 @@ public class SqlFactory {
 		private Column newColumn(Table table,ResultSetMetaDataHolder m) {
 			//Table table, int sqlType, String sqlTypeName,String sqlName, int size, int decimalDigits, boolean isPk,boolean isNullable, boolean isIndexed, boolean isUnique,String defaultValue,String remarks
 			Column column = new Column(null,m.getColumnType(),m.getColumnTypeName(),m.getColumnNameOrLabel(),m.getColumnDisplaySize(),m.getScale(),false,false,false,false,null,null);
-			GLogger.trace("not found on table by table emtpty:"+BeanHelper.describe(column));
+			logger.debug("not found on table by table emtpty:"+BeanHelper.describe(column));
 			return column;
 		}
 

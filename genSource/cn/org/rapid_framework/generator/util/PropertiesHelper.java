@@ -7,9 +7,9 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import cn.org.rapid_framework.generator.GeneratorProperties;
 
@@ -115,10 +115,16 @@ public class PropertiesHelper {
 	}
 	
 	
+	/**
+	 * @param properties
+	 * @param resourceNames
+	 * @return
+	 * @throws IOException
+	 */
 	public static String[] loadAllPropertiesFromClassLoader(Properties properties,String... resourceNames) throws IOException {
-		List successLoadProperties = new ArrayList();
+		List<String> successLoadProperties = new ArrayList<String>();
 		for(String resourceName : resourceNames) {
-			Enumeration urls = GeneratorProperties.class.getClassLoader().getResources(resourceName);
+			Enumeration<URL> urls = GeneratorProperties.class.getClassLoader().getResources(resourceName);
 			while (urls.hasMoreElements()) {
 				URL url = (URL) urls.nextElement();
 				successLoadProperties.add(url.getFile());

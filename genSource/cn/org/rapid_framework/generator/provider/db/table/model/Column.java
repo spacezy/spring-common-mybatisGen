@@ -4,10 +4,11 @@ package cn.org.rapid_framework.generator.provider.db.table.model;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import cn.org.rapid_framework.generator.GeneratorProperties;
 import cn.org.rapid_framework.generator.provider.db.table.model.ForeignKey.ReferenceKey;
 import cn.org.rapid_framework.generator.provider.db.table.model.util.ColumnHelper;
-import cn.org.rapid_framework.generator.util.GLogger;
 import cn.org.rapid_framework.generator.util.StringHelper;
 import cn.org.rapid_framework.generator.util.TestDataGenerator;
 import cn.org.rapid_framework.generator.util.typemapping.ActionScriptDataTypesUtils;
@@ -21,6 +22,7 @@ import cn.org.rapid_framework.generator.util.typemapping.JdbcType;
  * @email badqiu(a)gmail.com
  */
 public class Column implements java.io.Serializable,Cloneable{
+	private static  Logger logger=Logger.getLogger(Column.class);
 	/**
 	 * Reference to the containing table
 	 */
@@ -118,10 +120,7 @@ public class Column implements java.io.Serializable,Cloneable{
 		_isUnique = isUnique;
 		_defaultValue = defaultValue;
 		_remarks = remarks;
-		
-		
-		GLogger.trace(sqlName + " isPk -> " + _isPk);
-		
+		logger.debug(sqlName + " isPk -> " + _isPk);
 		initOtherProperties();
 	}
 
