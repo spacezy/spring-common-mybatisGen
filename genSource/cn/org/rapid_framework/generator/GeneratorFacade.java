@@ -26,15 +26,13 @@ public class GeneratorFacade {
 	public static String GENTABNAME;
 	public Generator g = new Generator();
 	public GeneratorFacade() {
-		String outRoot = GeneratorProperties.getProperty("outRoot");
-		File outRootDir = new File(outRoot);
+		File outRootDir = new File("output");
 		String override = GeneratorProperties.getProperty("override");
 		if (!outRootDir.exists() || Boolean.valueOf(override)) {// 如果此目录不存在，则创建该目录
 			FileUtils.deleteQuietly(outRootDir);
-			System.out.println("----->建目录" + outRoot);
-			outRootDir.mkdir();
+			outRootDir.mkdirs();
 		}
-		g.setOutRootDir(outRoot);
+		g.setOutRootDir(outRootDir.getAbsolutePath());
 	}
 	
 	public static void printAllTableNames() throws Exception {

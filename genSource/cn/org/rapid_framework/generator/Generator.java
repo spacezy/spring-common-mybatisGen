@@ -15,8 +15,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import main.GeneratorMain;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -41,7 +39,7 @@ import freemarker.template.TemplateException;
  * @email shaoling@gmail.com
  */
 public class Generator {
-	private static  Logger logger=Logger.getLogger(GeneratorMain.class);
+	private static  Logger logger=Logger.getLogger(Generator.class);
 	private static final String GENERATOR_INSERT_LOCATION = "generator-insert-location";
 	private List<File> templateRootDirs = new ArrayList<File>();
 	private String outRootDir;
@@ -178,17 +176,12 @@ public class Generator {
 		if (templateRootDir == null)
 			throw new IllegalStateException("'templateRootDir' must be not null");
 		logger.info("load template from templateRootDir ["+templateRootDir.getAbsolutePath()+",outRootDir["+new File(outRootDir).getAbsolutePath());
-		
-//		List<File> srcFiles = FileHelper.searchAllNotIgnoreFile(templateRootDir);
 		List<File> srcFiles =new ArrayList<File>();
-//		System.out.println("111111111111111111111111111111111111111111111");
-//		System.out.println(srcFiles.size());
-//		System.out.println("2222222222222222222222222222222222");
 		String[] extensions= {"xml","java"};
 		Collection<File> col=FileUtils.listFiles(templateRootDir, extensions, true);
-		
-		System.out.println(col.size());
-//		System.out.println("33333333333333333333333333333");
+		for (File file : col) {
+			srcFiles.add(file);
+		}
 		List<Exception> exceptions = new ArrayList();
 		for (int i = 0; i < srcFiles.size(); i++) {
 			File srcFile = (File) srcFiles.get(i);

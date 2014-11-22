@@ -18,9 +18,9 @@ public class GeneratorMain {
 		GeneratorFacade g = new GeneratorFacade();
 //		g.printAllTableNames();				//打印数据库中的表名称
 // 		g.generateByAllTable(getTplPath());	//不建议使用：自动搜索数据库中的所有表并生成文件,template为模板的根目录
-// 		g.generateByTable("jc_user", getTplPath());//名称如果是*,则所有表
+ 		g.generateByTable("jc_user", getTplPath());//名称如果是*,则所有表
 //		Runtime.getRuntime().exec("cmd.exe /c start "+GeneratorProperties.getRequiredProperty("outRoot")+"/ibatis3/template/java_src");
-		Runtime.getRuntime().exec("cmd.exe /c start "+".");
+//		Runtime.getRuntime().exec("cmd.exe /c start "+".");
 	}
 	
 	/**基于spring-core，在当前类路径下查找资源
