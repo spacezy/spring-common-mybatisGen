@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import cn.shaolingweb.demo.curd.model.User;
 import cn.shaolingweb.framework.model.Pager;
 /**
  * MyBatis DAO通用操作类
@@ -13,13 +14,12 @@ import cn.shaolingweb.framework.model.Pager;
 public interface MyBatisBaseDao<T, PK extends Serializable>{
 	/**
 	 * 增加实体
-	 * @param object
+	 * @param obj
 	 */
-	public int save(T object);
+	public int save(T obj);
 
 	/**
-	 * 按条件查询实体
-	 * 
+	 * 按条件查询实体,不分页
 	 * @param obj
 	 * @return
 	 */
@@ -27,14 +27,12 @@ public interface MyBatisBaseDao<T, PK extends Serializable>{
 
 	/**
 	 * 按条件查询实体并分页
-	 * 
 	 * @param obj
 	 * @return
 	 */
 	public List<T> findByCondition(T obj, int start, int limit);
 	
 	/**
-	 * 
 	 * @description 分页查询
 	 * @param   obj 查询对象
 	 * @param   pager 分页对象
@@ -45,7 +43,6 @@ public interface MyBatisBaseDao<T, PK extends Serializable>{
 
 	/**
 	 * 按主键查询
-	 * 
 	 * @param pk
 	 * @return
 	 */
@@ -53,21 +50,24 @@ public interface MyBatisBaseDao<T, PK extends Serializable>{
 
 	/**
 	 * 更新实体
-	 * 
 	 * @param object
 	 */
-	public void update(T object);
+	public void update(T obj);
 
 	/**
 	 * 按主键删除实体
-	 * 
 	 * @param pk
 	 */
 	public void delete(PK pk, Class<T> cls);
+	/**
+	 * 根据ID串，进行批量删除
+	 * @param ids	id字符串  如: 1,2,3
+	 * @param cls	实体类型
+	 */
+	public void deleteByIds(String ids, Class<User> cls);
 
 	/**
 	 * 按条件查询总记录数
-	 * 
 	 * @param object
 	 * @return
 	 */
@@ -98,7 +98,6 @@ public interface MyBatisBaseDao<T, PK extends Serializable>{
 	 */
 	public void updateBatch(Class<T> cls, List<T> domainList,Integer count);
 	
- 
 	/**
 	 * 取得当前SqlManClient
 	* @Title: getCurSqlSessionTemplate

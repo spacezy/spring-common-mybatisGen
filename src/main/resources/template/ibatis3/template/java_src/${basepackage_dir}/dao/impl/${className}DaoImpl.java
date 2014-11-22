@@ -1,27 +1,18 @@
 <#include "/java_copyright.include">
 <#assign className = table.className>   
 <#assign classNameLower = className?uncap_first>   
-package ${basepackage}.impl;
+package ${basepackage}.dao.impl;
 
-import cn.bidlink.framework.core.annotation.Dao;
+import java.util.Map;
+import java.util.HashMap;
+
+import org.springframework.stereotype.Repository;
+import  cn.shaolingweb.framework.dao.MyBatisBaseDaoImpl;
+import ${basepackage}.model.${className};
+import ${basepackage}.dao.${className}Dao;
 <#include "/java_imports.include">
 
-/**
- * 
- * @description:	${table.remarks}
- * @version   Ver 1.0
- * @author   <a href="mailto:zuiwoxing@gmail.com">SYSTEM</a>
- * @Date	 2012	2012-9-4		下午6:45:14
- *
- */
-@Dao
+@Repository
 public class ${className}DaoImpl extends MyBatisBaseDaoImpl<${className},${table.idColumn.javaType}> implements  ${className}Dao{
 	
-	@Override
-	public void deleteByIds(String ids, Class<${className}> cls) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("ids", ids);
-		this.getCurSqlSessionTemplate().delete(cls.getName()+".delete_batch_string", map);
-	}
-
 }

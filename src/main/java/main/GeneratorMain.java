@@ -2,6 +2,7 @@ package main;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -21,6 +22,8 @@ public class GeneratorMain {
  		g.generateByTable("jc_user", getTplPath());//名称如果是*,则所有表
 //		Runtime.getRuntime().exec("cmd.exe /c start "+GeneratorProperties.getRequiredProperty("outRoot")+"/ibatis3/template/java_src");
 //		Runtime.getRuntime().exec("cmd.exe /c start "+".");
+ 		copyToDemo();
+ 		System.out.println("................over.................");
 	}
 	
 	/**基于spring-core，在当前类路径下查找资源
@@ -37,5 +40,14 @@ public class GeneratorMain {
 				e.printStackTrace();
 			}
 			return null;
+	}
+	private static void copyToDemo() {
+		File srcDir=new File("output/ibatis3/template/java_src");
+		File destDir=new File("src/test/java");
+		try {
+			FileUtils.copyDirectory(srcDir, destDir);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

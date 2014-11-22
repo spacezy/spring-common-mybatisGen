@@ -3,23 +3,24 @@
 <#assign className = table.className>   
 <#assign classNameLower = className?uncap_first> 
 package ${basepackage}.model;
+
+import cn.shaolingweb.framework.model.BaseModel;
 <#if table.needDateTimeFormat>
 import org.springframework.format.annotation.DateTimeFormat;
 </#if>
 <#include "/java_imports.include">
 
 /**
+ * 自动生成，请勿修改
  * @table ${table.sqlName}   ${table.remarks}
- * @version  Ver 1.0
- * @author  shaoling@ebnew.com
+ * @author  shaoling
  */
-public class ${className} extends BaseModelExt{
+public class ${className} extends BaseModel{
 	private static final long serialVersionUID = 1L;
 	<#list table.columns as column>
-	 /**
-     * 描述:${column.columnAlias!}     
-     * 字段: ${column.sqlName}  ${column.sqlTypeName}(${column.size})  
-     */	
+	/**描述:${column.columnAlias!}   
+        * 字段: ${column.sqlName}  ${column.sqlTypeName}(${column.size})  
+       */	
 	<#if column.needDateTimeFormat>
 	@DateTimeFormat(pattern="${column.format}")
 	</#if>
@@ -37,13 +38,12 @@ public class ${className} extends BaseModelExt{
 	private ${column.javaType} ${column.columnNameLower}End;
 	</#if> 
 	</#list>
- 
-
 	<@generateConstructor className/>
 	<@generateJavaColumns/>
+	<#-- 
 	<@generateJavaOneToMany/>
 	<@generateJavaManyToOne/>
- 
+	-->
 }
 
 <#macro generateJavaColumns>
@@ -73,8 +73,6 @@ public class ${className} extends BaseModelExt{
 		return this.${column.columnNameLower}End;
 	}	
 	 </#if> 
-    
-    
 	</#list>
 </#macro>
 

@@ -2,7 +2,9 @@ package cn.shaolingweb.framework.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.ExecutorType;
@@ -14,6 +16,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import cn.shaolingweb.demo.curd.model.User;
 import cn.shaolingweb.framework.exception.BusinessException;
 import cn.shaolingweb.framework.model.Pager;
 /**
@@ -70,11 +73,11 @@ public class MyBatisBaseDaoImpl<T, PK extends Serializable> /**extends SqlSessio
  
  
 	@Override
-	public int save(T object) {
-		if(object == null) {
+	public int save(T obj) {
+		if(obj == null) {
 			throw new BusinessException(" object can't null!");
 		}
-		 return sqlSessionTemplate.insert(object.getClass().getName()+ INSERT,object);
+		 return sqlSessionTemplate.insert(obj.getClass().getName()+ INSERT,obj);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -119,11 +122,11 @@ public class MyBatisBaseDaoImpl<T, PK extends Serializable> /**extends SqlSessio
 	}
 
 	@Override
-	public void update(T object) {
-		if(object == null) {
+	public void update(T obj) {
+		if(obj == null) {
 			throw new BusinessException(" object can't null!");
 		}
-		sqlSessionTemplate.update(object.getClass().getName()+UPDATE, object);
+		sqlSessionTemplate.update(obj.getClass().getName()+UPDATE, obj);
 	}
 
 	@Override
@@ -133,7 +136,12 @@ public class MyBatisBaseDaoImpl<T, PK extends Serializable> /**extends SqlSessio
 		}
 		sqlSessionTemplate.delete(cls.getName()+DELETE, pk);
 	}
-
+	@Override
+	public void deleteByIds(String ids, Class<User> cls) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("ids", ids);
+		this.getCurSqlSessionTemplate().delete(cls.getName()+".delete_batch_string", map);
+	}
 	@Override
 	public Integer getTotalCount(T object) {
 		if(object == null) {
