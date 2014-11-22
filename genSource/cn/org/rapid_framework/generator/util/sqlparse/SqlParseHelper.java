@@ -1,4 +1,6 @@
 package cn.org.rapid_framework.generator.util.sqlparse;
+import genMain.GeneratorMain;
+
 import java.io.StringReader;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -7,8 +9,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import main.GeneratorMain;
 
 import org.apache.log4j.Logger;
 

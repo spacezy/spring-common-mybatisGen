@@ -14,8 +14,6 @@ import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
-import main.GeneratorMain;
-
 import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 
@@ -27,6 +25,7 @@ import cn.org.rapid_framework.generator.util.StringHelper;
 import cn.org.rapid_framework.generator.util.SystemHelper;
 import cn.org.rapid_framework.generator.util.XMLHelper;
 import freemarker.ext.dom.NodeModel;
+import genMain.GeneratorMain;
 
 /**
  * 生成器模板控制器,用于模板中可以控制生成器执行相关控制操作

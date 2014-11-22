@@ -1,4 +1,4 @@
-package main;
+package genMain;
 import java.io.File;
 import java.io.IOException;
 
