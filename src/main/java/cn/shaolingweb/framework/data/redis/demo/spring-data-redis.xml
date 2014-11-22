@@ -22,5 +22,7 @@
 		p:hostName="${redis.ip}" p:port="${redis.port}" p:poolConfig-ref="jedisPoolConfig"
 	/> 
 	<!-- 模板类 -->
-	<bean id="jedisTemplate" class="org.springframework.data.redis.core.RedisTemplate"  p:connection-factory-ref="jedisConnectionFactory" />
+	<bean id="jedisTemplate" class="org.springframework.data.redis.core.RedisTemplate" 
+		p:connection-factory-ref="jedisConnectionFactory" 
+		p:keySerializer="org.springframework.data.redis.serializer.StringRedisSerializer" />
 </beans>

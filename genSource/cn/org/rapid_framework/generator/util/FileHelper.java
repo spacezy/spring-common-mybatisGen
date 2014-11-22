@@ -16,14 +16,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 
 import cn.org.rapid_framework.generator.GeneratorProperties;
-/**
- * 
- * @author badqiu
- * @email badqiu(a)gmail.com
- */
 public class FileHelper {
 	/**
 	 * 得到相对路径

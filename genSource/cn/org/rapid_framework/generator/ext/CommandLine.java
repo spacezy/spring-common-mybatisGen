@@ -10,8 +10,6 @@ import cn.org.rapid_framework.generator.util.StringHelper;
 import cn.org.rapid_framework.generator.util.SystemHelper;
 /**
  * 命令行工具类,可以直接运行
- * 
- * @author badqiu
  */
 public class CommandLine {
 	
