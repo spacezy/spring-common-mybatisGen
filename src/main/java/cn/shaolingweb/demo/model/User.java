@@ -11,7 +11,6 @@ import java.io.Serializable;
 public class User implements Serializable{
 	private java.lang.Integer id;
 	private java.lang.String name;
-	private java.lang.String username;
 	/**
 	 * @return the id
 	 */
@@ -39,13 +38,4 @@ public class User implements Serializable{
 	/**
 	 * @return the username
 	 */
-	public java.lang.String getUsername() {
-		return username;
-	}
-	/**
-	 * @param username the username to set
-	 */
-	public void setUsername(java.lang.String username) {
-		this.username = username;
-	}
 }
