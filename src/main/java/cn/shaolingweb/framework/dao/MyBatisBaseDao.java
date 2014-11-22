@@ -1,10 +1,10 @@
-package cn.shaolingweb.dao;
+package cn.shaolingweb.framework.dao;
 import java.io.Serializable;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
-import cn.shaolingweb.model.Pager;
+import cn.shaolingweb.framework.model.Pager;
 /**
  * MyBatis DAO通用操作类
  * @param <T>

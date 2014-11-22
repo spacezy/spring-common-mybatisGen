@@ -1,4 +1,4 @@
-package cn.shaolingweb.model;
+package cn.shaolingweb.framework.model;
 
 import java.io.Serializable;
 

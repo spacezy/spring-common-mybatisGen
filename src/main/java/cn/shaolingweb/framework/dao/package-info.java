@@ -2,4 +2,4 @@
  * 
  * @author  shaoling@shaolingweb.cn
  */
-package cn.shaolingweb.dao;
+package cn.shaolingweb.framework.dao;

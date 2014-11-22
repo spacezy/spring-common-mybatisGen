@@ -1,4 +1,4 @@
-package cn.shaolingweb.dao;
+package cn.shaolingweb.framework.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import cn.shaolingweb.framework.exception.BusinessException;
-import cn.shaolingweb.model.Pager;
+import cn.shaolingweb.framework.model.Pager;
 /**
  * @description: mybatis DAO 通用工具类
  */
