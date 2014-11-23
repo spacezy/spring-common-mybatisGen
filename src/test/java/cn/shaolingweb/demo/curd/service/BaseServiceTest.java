@@ -23,7 +23,7 @@ public class BaseServiceTest {
 	private BaseService<User, Serializable> baseService;
 	
 	@Test
-	public void test() {
+	public void testQuery() {
 		try {
 			System.out.println("---"+sqlSessionTemplate.getConnection().getCatalog());
 			System.out.println(baseService);

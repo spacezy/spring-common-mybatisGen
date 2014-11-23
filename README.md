@@ -19,5 +19,19 @@
 - Java快速开发框架：bboss1
 - Java快速开发框架：bboss2
 #学习参考	
+- []()
+- [es](https://github.com/sshling/es)
+- [加速Java应用开发速度](http://jinnianshilongnian.iteye.com/blog/1887788)
+- [Mybatis通用Mapper](http://git.oschina.net/free/Mapper)
+- [Mybatis-PageHelper](https://github.com/pagehelper/Mybatis-PageHelper)
+- [github搜索： spring+mybatis](https://github.com/search?utf8=%E2%9C%93&q=spring+mybatis)
+- [mybatis-spring](https://github.com/sxyx2008/mybatis-spring) log4jdbc或者p6spy输出sql
+- [jpetstore-6](https://github.com/mybatis/jpetstore-6)
+- [SpringMVC-Spring-MyBatis](https://github.com/ZhibingXie/SpringMVC-Spring-MyBatis)
 - [mybatis学习笔记](http://legend2011.blog.51cto.com/3018495/888848)
 - [Spring，Struts的DTD验证](http://a123159521.iteye.com/blog/782198)
+- [我是这样认识注解和XML的](http://jinnianshilongnian.iteye.com/blog/1879910)
+## druid教程
+- []()
+- [druid简单教程](http://blog.csdn.net/yunnysunny/article/details/8657095) 包含常见配置项说明
+- []()

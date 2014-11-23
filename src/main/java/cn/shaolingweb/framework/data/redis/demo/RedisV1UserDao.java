@@ -38,17 +38,17 @@ public class RedisV1UserDao extends RedisBase<String,User>{
 			@Override
 			public Object doInRedis(RedisConnection conn) throws DataAccessException {
 				//#2 redis的set方法 ，#3无论k、v都需要序列化
-				 conn.set(getTemplate().getStringSerializer().serialize("user.id"+user.getId()), 
-						 getTemplate().getStringSerializer().serialize(user.getName()));
+				 conn.set(getTemplate().getStringSerializer().serialize("user.id"+user.getUserId()), 
+						 getTemplate().getStringSerializer().serialize(user.getUsername()));
 				return null;
 			}
 		});
 	 };  
 	 void saveHash(User user) {//操作hash
-		 final String hkey="user:"+user.getId();
+		 final String hkey="user:"+user.getUserId();
 		 BoundHashOperations<String, String, String> hashOps=getTemplate().boundHashOps(hkey);
 		 Map<String, String> data=new HashMap<String, String>();
-		 data.put("id", user.getId()+"");
+		 data.put("id", user.getUserId()+"");
 		 data.put("name", user.getName());
 		 hashOps.putAll(data);
 		 //取出hash
@@ -82,7 +82,7 @@ public class RedisV1UserDao extends RedisBase<String,User>{
 		User user=new User();
 		user.setId(11);
 		user.setName("shaoling");
-		String key="user_"+user.getId();
+		String key="user_"+user.getUserId();
 		valueOps.set(key, user);
 		user=valueOps.get(key);
 	 }
@@ -90,7 +90,7 @@ public class RedisV1UserDao extends RedisBase<String,User>{
 		User user=new User();
 		user.setId(22);
 		user.setName("shaoling");
-		String key="user_"+user.getId();
+		String key="user_"+user.getUserId();
 		BoundValueOperations<String, User> bvOps=getTemplate().boundValueOps(key);
 		//boundListOps、boundSetOps、boundZSetOps、boundHashOps
 		bvOps.set(user);
@@ -98,7 +98,7 @@ public class RedisV1UserDao extends RedisBase<String,User>{
 	}
 	 void txUnusedPoolSample() {//非连接池环境下，事务操作
 		 User user=new User(22, "shaoling");
-		 String key="user_"+user.getId();
+		 String key="user_"+user.getUserId();
 		 getTemplate().watch(key);
 		 getTemplate().multi();
 		 ValueOperations<String, User> ops=getTemplate().opsForValue();
@@ -111,7 +111,7 @@ public class RedisV1UserDao extends RedisBase<String,User>{
 			public User execute(RedisOperations  ops) throws DataAccessException {
 				 ops.multi();
 				 User user=new User(22, "shaoling");
-				 String key="user_"+user.getId();
+				 String key="user_"+user.getUserId();
 				 BoundValueOperations<String, User> bvops=ops.boundValueOps(key);
 				 bvops.set(user);
 				 bvops.expire(60, TimeUnit.MINUTES);

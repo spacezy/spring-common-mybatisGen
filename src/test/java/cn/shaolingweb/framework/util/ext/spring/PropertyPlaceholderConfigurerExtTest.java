@@ -14,7 +14,7 @@ import cn.shaolingweb.demo.model.UserInfo;
  * @author  shaoling@shaolingweb.cn
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:springExt/spring-PropertyPlaceholderConfigurerExtTest.xml")
+@ContextConfiguration(locations = "classpath:springExt/spring-PropertyPlaceholderConfigurerTest.xml")
 public class PropertyPlaceholderConfigurerExtTest {
 	
 	@Autowired

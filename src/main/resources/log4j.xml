@@ -32,16 +32,44 @@
 			value="[%d{MMdd HH:mm:ss SSS\} %-5p] [%t] %c{3\} - %m%n" />
 		</layout> 
 	</appender>
-  
-	<!-- 指定logger的设置，additivity指示是否遵循缺省的继承机制-->
-	<logger name="cn.org.rapid_framework." additivity="false">
-		<priority value ="debug"/> 
+	<!-- additivity指示是否遵循缺省的继承机制-->
+	<logger name="cn.org.rapid_framework" additivity="false" >
+		<level value="debug" /><!-- 是level不是priority -->
+		<appender-ref ref="myConsole" /> 
+	</logger>
+	<!-- MyBatis打印SQL日志 -->
+	<logger name="com.ibatis" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="myConsole" /> 
+	</logger>
+	<logger name="com.ibatis.common.jdbc.SimpleDataSource" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="myConsole" /> 
+	</logger>
+	<logger name="com.ibatis.common.jdbc.ScriptRunner" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="myConsole" /> 
+	</logger>
+	<logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="myConsole" /> 
+	</logger>
+	<logger name="java.sql.Connection" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="myConsole" /> 
+	</logger>
+	<logger name="java.sql.Statement" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="myConsole" /> 
+	</logger>
+	<logger name="java.sql.PreparedStatement" additivity="false">
+		<level value="debug" />
 		<appender-ref ref="myConsole" /> 
 	</logger>
 
 	<!-- 根logger的设置-->
 	<root>
-		<priority value ="info"  />
+		<priority value ="error"  />
 		<appender-ref ref="myConsole"/>
 	</root>
 </log4j:configuration>
