@@ -12,24 +12,25 @@
 	   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
-       <!-- 
-       参考：spring配置datasource三种方式 http://blog.csdn.net/yangyz_love/article/details/8199207
-       org.springframework.jdbc.datasource.DriverManagerDataSource  
-       		只要有连接就新建一个connection,根本没有连接池的作用
-       	org.apache.commons.dbcp.BasicDataSource 真正使用了连接池技术 	
-        -->
-	<!-- 内存式数据库和数据源dataSource -->
-	<jdbc:embedded-database id="dataSource">
-		<jdbc:script location="classpath:database/jpetstore-hsqldb-schema.sql" />
-		<jdbc:script location="classpath:database/jpetstore-hsqldb-dataload.sql" />
-	</jdbc:embedded-database>
-	<!-- 数据源:无连接池 -->
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+       
+       	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
               <property name="driverClassName"  value="${jdbc.driverClassName}" /> 
               <property name="url" value="${jdbc.url}" /> 
               <property name="username"  value="${jdbc.username}" /> 
               <property name="password" value="${jdbc.password}" /> 
        </bean> 
-	<!-- 动态数据源 -->
-	<!-- 阿里数据库连接池 -->
+ 	<!-- transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="typeAliasesPackage" value="org.mybatis.jpetstore.domain" />
+	</bean>
+	    <!-- scan for mappers and let them be autowired -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+<!--         <property name="basePackage" value="org.mybatis.jpetstore.persistence" /> -->
+        <property name="basePackage" value="${mybatis.dao)" />
+    </bean>
 </beans>
