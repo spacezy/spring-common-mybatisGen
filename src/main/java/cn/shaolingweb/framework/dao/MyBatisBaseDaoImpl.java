@@ -24,11 +24,16 @@ import cn.shaolingweb.framework.model.Pager;
 /**
  * @description: mybatis DAO 通用工具类
  */
-@Repository("myBatisBaseDao")
+@Repository
 public class MyBatisBaseDaoImpl<T, PK extends Serializable> extends SqlSessionDaoSupport implements
 		MyBatisBaseDao<T, PK> {
-	
 	private static Logger logger = Logger.getLogger(MyBatisBaseDaoImpl.class);
+	
+	@Autowired
+	private SqlSessionFactory sqlSessionFactory;
+	@Autowired
+	private SqlSessionTemplate sqlSessionTemplate;
+	
 	/**
 	 * 根据条件 分页查询
 	 */
@@ -60,11 +65,6 @@ public class MyBatisBaseDaoImpl<T, PK extends Serializable> extends SqlSessionDa
 	 * 根据条件 分页查询
 	 */
 	public String PAGESELECT = ".findPage";
-	
-	@Autowired
-	private SqlSessionFactory sqlSessionFactory;
-	@Autowired
-	private SqlSessionTemplate sqlSessionTemplate;
 	
 	private Object target;
 	

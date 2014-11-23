@@ -4,8 +4,8 @@
 加速开发，<b>come on,baby</b>....这个一定是<b>最方便</b>使用的。  
 
 #待开发：`JPA注解`、`分页解耦`;
-	
-[一起学习](http://www.baidu.com)
+#学习参考	
+-[mybatis学习笔记](http://legend2011.blog.51cto.com/3018495/888848)
 	
 ## 支持Spring+JPA注解
 ## 支持Spring+XML配置
