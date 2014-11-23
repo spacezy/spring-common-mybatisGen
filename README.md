@@ -1,7 +1,7 @@
 spring-common-mybatisGen
 ========================
 #开发中.....
-	加速开发，<b>come on,baby</b>....
+	加速开发，<b>come on,baby</b>....这个一定是<b>最方便</b>使用的。  
 #待开发：
 	`JPA注解`、`分页解耦`;
 	
