@@ -11,7 +11,7 @@ import cn.shaolingweb.demo.curd.model.User;
 import cn.shaolingweb.framework.dao.MyBatisBaseDao;
 import cn.shaolingweb.framework.model.Pager;
 
-@Service
+@Service("baseService")
 public class BaseServiceImpl<T, PK extends Serializable>implements BaseService<T, PK>{
 	
 	@Autowired

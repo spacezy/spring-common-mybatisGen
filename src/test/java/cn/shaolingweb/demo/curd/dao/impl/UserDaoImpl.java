@@ -2,11 +2,13 @@
 * Copyright  © shaoling
 */package cn.shaolingweb.demo.curd.dao.impl;
 
-import org.springframework.stereotype.Repository;
+import java.util.Map;
+import java.util.HashMap;
 
-import cn.shaolingweb.demo.curd.dao.UserDao;
+import org.springframework.stereotype.Repository;
+import  cn.shaolingweb.framework.dao.MyBatisBaseDaoImpl;
 import cn.shaolingweb.demo.curd.model.User;
-import cn.shaolingweb.framework.dao.MyBatisBaseDaoImpl;
+import cn.shaolingweb.demo.curd.dao.UserDao;
 
 @Repository
 public class UserDaoImpl extends MyBatisBaseDaoImpl<User,java.lang.Integer> implements  UserDao{

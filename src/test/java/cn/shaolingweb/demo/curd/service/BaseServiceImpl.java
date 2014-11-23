@@ -15,7 +15,7 @@ import cn.shaolingweb.framework.model.Pager;
 public class BaseServiceImpl<T, PK extends Serializable>implements BaseService<T, PK>{
 	
 	@Autowired
-	private MyBatisBaseDao<T, Serializable> baseDao;
+	private MyBatisBaseDao<T, Serializable> myBatisBaseDao;
 
 	/**
 	 * @param obj
@@ -23,7 +23,7 @@ public class BaseServiceImpl<T, PK extends Serializable>implements BaseService<T
 	 */
 	@Override
 	public int save(T obj) {
-		return baseDao.save(obj);
+		return myBatisBaseDao.save(obj);
 	}
 
 	/**
@@ -32,7 +32,7 @@ public class BaseServiceImpl<T, PK extends Serializable>implements BaseService<T
 	 */
 	@Override
 	public List<T> findByCondition(T obj) {
-		return baseDao.findByCondition(obj);
+		return myBatisBaseDao.findByCondition(obj);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class BaseServiceImpl<T, PK extends Serializable>implements BaseService<T
 	 */
 	@Override
 	public List<T> findByCondition(T obj, int start, int limit) {
-		return baseDao.findByCondition(obj, start, limit);
+		return myBatisBaseDao.findByCondition(obj, start, limit);
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class BaseServiceImpl<T, PK extends Serializable>implements BaseService<T
 	 */
 	@Override
 	public List<T> findByCondition(T obj, Pager pager) {
-		return baseDao.findByCondition(obj, pager);
+		return myBatisBaseDao.findByCondition(obj, pager);
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class BaseServiceImpl<T, PK extends Serializable>implements BaseService<T
 	 */
 	@Override
 	public T findByPK(PK pk, Class<T> cls) {
-		return baseDao.findByPK(pk, cls);
+		return myBatisBaseDao.findByPK(pk, cls);
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class BaseServiceImpl<T, PK extends Serializable>implements BaseService<T
 	 */
 	@Override
 	public void update(T obj) {
-		baseDao.update(obj);
+		myBatisBaseDao.update(obj);
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class BaseServiceImpl<T, PK extends Serializable>implements BaseService<T
 	 */
 	@Override
 	public void delete(PK pk, Class<T> cls) {
-		baseDao.delete(pk, cls);
+		myBatisBaseDao.delete(pk, cls);
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class BaseServiceImpl<T, PK extends Serializable>implements BaseService<T
 	 */
 	@Override
 	public void deleteByIds(String ids, Class<User> cls) {
-		baseDao.deleteByIds(ids, cls);
+		myBatisBaseDao.deleteByIds(ids, cls);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class BaseServiceImpl<T, PK extends Serializable>implements BaseService<T
 	 */
 	@Override
 	public Integer getTotalCount(T object) {
-		return baseDao.getTotalCount(object);
+		return myBatisBaseDao.getTotalCount(object);
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class BaseServiceImpl<T, PK extends Serializable>implements BaseService<T
 	 */
 	@Override
 	public void insertBatch(Class<T> cls, List<T> domainList, Integer count) {
-		baseDao.insertBatch(cls, domainList, count);
+		myBatisBaseDao.insertBatch(cls, domainList, count);
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class BaseServiceImpl<T, PK extends Serializable>implements BaseService<T
 	 */
 	@Override
 	public void insertBatch(Class<T> cls, List<T> domainList) {
-		baseDao.insertBatch(cls, domainList);
+		myBatisBaseDao.insertBatch(cls, domainList);
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class BaseServiceImpl<T, PK extends Serializable>implements BaseService<T
 	 */
 	@Override
 	public void updateBatch(Class<T> cls, List<T> domainList, Integer count) {
-		baseDao.updateBatch(cls, domainList, count);
+		myBatisBaseDao.updateBatch(cls, domainList, count);
 	}
 
 	/**
@@ -135,6 +135,6 @@ public class BaseServiceImpl<T, PK extends Serializable>implements BaseService<T
 	 */
 	@Override
 	public SqlSessionTemplate getCurSqlSessionTemplate() {
-		return baseDao.getCurSqlSessionTemplate();
+		return myBatisBaseDao.getCurSqlSessionTemplate();
 	}
 }

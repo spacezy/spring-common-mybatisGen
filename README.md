@@ -19,5 +19,5 @@
 - Java快速开发框架：bboss1
 - Java快速开发框架：bboss2
 #学习参考	
--[mybatis学习笔记](http://legend2011.blog.51cto.com/3018495/888848)
--[Spring，Struts的DTD验证](http://a123159521.iteye.com/blog/782198)
+- [mybatis学习笔记](http://legend2011.blog.51cto.com/3018495/888848)
+- [Spring，Struts的DTD验证](http://a123159521.iteye.com/blog/782198)

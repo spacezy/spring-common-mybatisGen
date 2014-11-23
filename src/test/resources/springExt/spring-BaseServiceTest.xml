@@ -54,5 +54,5 @@
 	-->
 	<!-- 扫描service层 -->
 	<context:component-scan base-package="cn.shaolingweb.framework.dao" />  
-<!-- 	<context:component-scan base-package="cn.shaolingweb.demo.curd.dao" />   -->
+	<context:component-scan base-package="cn.shaolingweb.demo.curd" />  
 </beans>

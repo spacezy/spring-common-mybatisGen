@@ -13,7 +13,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.log4j.Logger;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -22,10 +21,11 @@ import cn.shaolingweb.framework.exception.BusinessException;
 import cn.shaolingweb.framework.model.Pager;
 
 /**
+ * SqlSessionDaoSupport  :mybatis-spring-1.2.0取消自动注入sqlSessionTemplate/sqlSessionFactory;
  * @description: mybatis DAO 通用工具类
  */
-@Repository
-public class MyBatisBaseDaoImpl<T, PK extends Serializable> extends SqlSessionDaoSupport implements
+@Repository("myBatisBaseDao")
+public class MyBatisBaseDaoImpl<T, PK extends Serializable> implements
 		MyBatisBaseDao<T, PK> {
 	private static Logger logger = Logger.getLogger(MyBatisBaseDaoImpl.class);
 	
