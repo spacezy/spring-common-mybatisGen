@@ -4,9 +4,7 @@
 加速开发，<b>come on,baby</b>....这个一定是<b>最方便</b>使用的。  
 
 #待开发：`JPA注解`、`分页解耦`;
-#学习参考	
--[mybatis学习笔记](http://legend2011.blog.51cto.com/3018495/888848)
-	
+
 ## 支持Spring+JPA注解
 ## 支持Spring+XML配置
 ## 生成器不覆盖自定义SQL，利用XML Item判断,约定大于配置
@@ -20,3 +18,6 @@
 1.Java快速开发框架：bboss0
 - Java快速开发框架：bboss1
 - Java快速开发框架：bboss2
+#学习参考	
+-[mybatis学习笔记](http://legend2011.blog.51cto.com/3018495/888848)
+-[Spring，Struts的DTD验证](http://a123159521.iteye.com/blog/782198)
