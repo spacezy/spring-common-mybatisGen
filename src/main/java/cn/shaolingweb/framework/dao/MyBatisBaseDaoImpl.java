@@ -13,24 +13,36 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.log4j.Logger;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import cn.shaolingweb.demo.curd.model.User;
 import cn.shaolingweb.framework.exception.BusinessException;
 import cn.shaolingweb.framework.model.Pager;
+
 /**
  * @description: mybatis DAO 通用工具类
  */
-@Component(value="myBatisBaseDao")
-public class MyBatisBaseDaoImpl<T, PK extends Serializable> /**extends SqlSessionDaoSupport**/  implements  MyBatisBaseDao<T, PK> {
- 
-    private static Logger logger = Logger.getLogger(MyBatisBaseDaoImpl.class);
-	@Autowired
-	private SqlSessionFactory sqlSessionFactory;
+@Repository("myBatisBaseDao")
+public class MyBatisBaseDaoImpl<T, PK extends Serializable> extends SqlSessionDaoSupport implements
+		MyBatisBaseDao<T, PK> {
 	
-	@Autowired
-	private SqlSessionTemplate sqlSessionTemplate;
+	private static Logger logger = Logger.getLogger(MyBatisBaseDaoImpl.class);
+	/**
+	 * 根据条件 分页查询
+	 */
+	public String COUNT = ".findPage_count";
+	
+	/**
+	 * 根据ID 删除
+	 */
+	public String DELETE = ".delete";
+	
+	/**
+	 * 根据ID 查询
+	 */
+	public String GETBYID = ".getById";
 	
 	/**
 	 * 插入
@@ -41,191 +53,116 @@ public class MyBatisBaseDaoImpl<T, PK extends Serializable> /**extends SqlSessio
 	 * 批量插入
 	 */
 	public String INSERT_BATCH = ".insertBatch";
-
-	/**
-	 * 更新
-	 */
-	public String UPDATE = ".update";
-
-	/**
-	 * 根据ID 删除
-	 */
-	public String DELETE = ".delete";
-
-	/**
-	 * 根据ID 查询
-	 */
-	public String GETBYID = ".getById";
-
-	/**
-	 * 根据条件 分页查询
-	 */
-	public String COUNT = ".findPage_count";
+	
+	private Method invokingMethod;
+	
 	/**
 	 * 根据条件 分页查询
 	 */
 	public String PAGESELECT = ".findPage";
 	
+	@Autowired
+	private SqlSessionFactory sqlSessionFactory;
+	@Autowired
+	private SqlSessionTemplate sqlSessionTemplate;
+	
 	private Object target;
 	
-	private Method invokingMethod;
+	/**
+	 * 更新
+	 */
+	public String UPDATE = ".update";
 	
- 
- 
-	@Override
-	public int save(T obj) {
-		if(obj == null) {
-			throw new BusinessException(" object can't null!");
-		}
-		 return sqlSessionTemplate.insert(obj.getClass().getName()+ INSERT,obj);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<T> findByCondition(T obj) {
-		if(obj == null) {
-			throw new BusinessException(" condition can't null!");
-		}
-		return (List<T>) sqlSessionTemplate.selectList(obj.getClass().getName()+ PAGESELECT, obj);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<T> findByCondition(T obj, int offset, int limit) {
-		if(obj == null) {
-			throw new BusinessException(" condition can't null!");
-		}
-		RowBounds rb = new RowBounds(offset, limit);
-		return (List<T>) sqlSessionTemplate.selectList(obj.getClass().getName()+PAGESELECT, obj, rb);
-	}
-	
-	@Override
-	public List<T> findByCondition(T obj, Pager pager) {
-		if(obj == null) {
-			throw new BusinessException(" condition can't null!");
-		}
-		 if (pager != null) {
-			 return this.findByCondition(obj,pager.getStartRow(),pager.getPageSize()); 
-		 } else {
-			 return this.findByCondition(obj);
-		 }
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public T findByPK(PK pk, Class<T> cls) {
-		if(pk == null) {
-			throw new BusinessException(" pk can't null!");
-		}
-		return (T) sqlSessionTemplate.selectOne(cls.getName()+GETBYID, pk);
- 
-	}
-
-	@Override
-	public void update(T obj) {
-		if(obj == null) {
-			throw new BusinessException(" object can't null!");
-		}
-		sqlSessionTemplate.update(obj.getClass().getName()+UPDATE, obj);
-	}
-
 	@Override
 	public void delete(PK pk, Class<T> cls) {
-		if(pk == null) {
+		if (pk == null) {
 			throw new BusinessException(" pk can't null!");
 		}
-		sqlSessionTemplate.delete(cls.getName()+DELETE, pk);
+		sqlSessionTemplate.delete(cls.getName() + DELETE, pk);
 	}
+	
 	@Override
 	public void deleteByIds(String ids, Class<User> cls) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("ids", ids);
-		this.getCurSqlSessionTemplate().delete(cls.getName()+".delete_batch_string", map);
+		this.getCurSqlSessionTemplate().delete(cls.getName() + ".delete_batch_string", map);
 	}
+	
+	@SuppressWarnings("unchecked")
 	@Override
-	public Integer getTotalCount(T object) {
-		if(object == null) {
+	public List<T> findByCondition(T obj) {
+		if (obj == null) {
 			throw new BusinessException(" condition can't null!");
 		}
-		Object obj = sqlSessionTemplate.selectOne(object.getClass().getName()+COUNT, object);
-		if (obj != null) {
-			return Integer.parseInt(obj.toString());
-		}
-		return 0;
+		return (List<T>) sqlSessionTemplate.selectList(obj.getClass().getName() + PAGESELECT, obj);
 	}
-
-
+	
+	@SuppressWarnings("unchecked")
 	@Override
-	public void insertBatch(Class<T> cls, List<T> domainList) {
-		sqlSessionTemplate.insert(cls.getName()+INSERT_BATCH, domainList);
+	public List<T> findByCondition(T obj, int offset, int limit) {
+		if (obj == null) {
+			throw new BusinessException(" condition can't null!");
+		}
+		RowBounds rb = new RowBounds(offset, limit);
+		return (List<T>) sqlSessionTemplate.selectList(obj.getClass().getName() + PAGESELECT, obj, rb);
 	}
 	
 	@Override
-	public void insertBatch(Class<T> cls, List<T> domainList, Integer count) {
-		SqlSession sqlSession = null;
-		try {
-			if (domainList == null) {
-				return;
-			}
-		 
-			sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH,false);
- 
-            int num = 0;
-			for (T t : domainList) {
-				 
-				sqlSession.insert(cls.getName()+ INSERT, t);
-				 num++; 
-				 if (count == num) {
-					 sqlSession.commit();
-					 num = 0;
-				 }
-			}
- 
-			sqlSession.commit();
-		}catch (Exception e) {
-			if (sqlSession != null) {
-			   sqlSession.rollback(true);
-			}
-			logger.error(e.getMessage(),e);
-		}  finally {
-			if (sqlSession != null) {
-				sqlSession.close();
-			}
+	public List<T> findByCondition(T obj, Pager pager) {
+		if (obj == null) {
+			throw new BusinessException(" condition can't null!");
 		}
+		if (pager != null) {
+			return this.findByCondition(obj, pager.getStartRow(), pager.getPageSize());
+		} else {
+			return this.findByCondition(obj);
+		}
+	}
 	
-		
+	@SuppressWarnings("unchecked")
+	@Override
+	public T findByPK(PK pk, Class<T> cls) {
+		if (pk == null) {
+			throw new BusinessException(" pk can't null!");
+		}
+		return (T) sqlSessionTemplate.selectOne(cls.getName() + GETBYID, pk);
 		
 	}
-
+	
 	@Override
-	public void updateBatch(Class<T> cls, List<T> domainList, Integer count) {
-		SqlSession sqlSession = null;
-		try {
-			if (domainList == null) {
-				return;
-			}
-			sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH,false);
-			
-			int num = 0;
-			for (T t : domainList) {
-				 sqlSession.update(cls.getName()+ UPDATE, t);
-				 num++; 
-				 if (count == num) {
-					 sqlSession.commit();
-					 num = 0;
-				 }
-			}
-			sqlSession.commit();
-		}catch (Exception e) {
-			if (sqlSession != null) {
-			   sqlSession.rollback(true);
-			}
-			logger.error(e.getMessage(),e);
-		}  finally {
-			if (sqlSession != null) {
-				sqlSession.close();
+	public SqlSessionTemplate getCurSqlSessionTemplate() {
+		return sqlSessionTemplate;
+	}
+	
+	public Method getInvokingMethod() {
+		return invokingMethod;
+	}
+	
+	/**
+	 * 获得调用的方法映射的sql语句的statement id。
+	 * 规约是映射文件的namespace就是对应的dao的类名（类的全名，如String，
+	 * 则类名是java.lang.String），映射的statement id是方法名。
+	 * 
+	 * @return
+	 */
+	public String getStatement() {
+		if (target == null || invokingMethod == null)
+			return null;
+		Class<?> c = target.getClass();
+		Method[] methods = c.getMethods();
+		String namespace = target.getClass().getName();
+		StringBuffer bufId = new StringBuffer(invokingMethod.getName());
+		for (Method m : methods) {
+			if (m.getName().equals(invokingMethod.getName()) && !m.equals(invokingMethod)) {
+				Class<?>[] s = m.getParameterTypes();
+				if (s != null && s.length > 0) {
+					for (Class<?> z : s) {
+						bufId.append("_").append(z.getSimpleName());
+					}
+				}
 			}
 		}
+		return namespace + "." + bufId.toString();
 	}
 	
 	/**
@@ -241,63 +178,120 @@ public class MyBatisBaseDaoImpl<T, PK extends Serializable> /**extends SqlSessio
 		}
 		return statement;
 	}
-
-	/**
-	 * 获得调用的方法映射的sql语句的statement id。 规约是映射文件的namespace就是对应的dao的类名（类的全名，如String，
-	 * 则类名是java.lang.String），映射的statement id是方法名。
-	 * 
-	 * @return
-	 */
-	public String getStatement() {
-		if (target == null || invokingMethod == null)
-			return null;
-		Class<?> c = target.getClass();
-		Method[] methods = c.getMethods();
-		String namespace = target.getClass().getName();
-		StringBuffer bufId = new StringBuffer(invokingMethod.getName());
-		for (Method m : methods) {
-			if (m.getName().equals(invokingMethod.getName())
-					&& !m.equals(invokingMethod)) {
-				Class<?>[] s = m.getParameterTypes();
-				if (s != null && s.length > 0) {
-					for (Class<?> z : s) {
-						bufId.append("_").append(z.getSimpleName());
-					}
-				}
-			}
-		}
-		return namespace + "." + bufId.toString();
-	}
 	
-
 	public Object getTarget() {
 		return target;
 	}
-
-	public void setTarget(Object target) {
-		this.target = target;
+	
+	@Override
+	public Integer getTotalCount(T object) {
+		if (object == null) {
+			throw new BusinessException(" condition can't null!");
+		}
+		Object obj = sqlSessionTemplate.selectOne(object.getClass().getName() + COUNT, object);
+		if (obj != null) {
+			return Integer.parseInt(obj.toString());
+		}
+		return 0;
 	}
-
-	public Method getInvokingMethod() {
-		return invokingMethod;
+	
+	@Override
+	public void insertBatch(Class<T> cls, List<T> domainList) {
+		sqlSessionTemplate.insert(cls.getName() + INSERT_BATCH, domainList);
 	}
-
+	
+	@Override
+	public void insertBatch(Class<T> cls, List<T> domainList, Integer count) {
+		SqlSession sqlSession = null;
+		try {
+			if (domainList == null) {
+				return;
+			}
+			sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+			int num = 0;
+			for (T t : domainList) {
+				
+				sqlSession.insert(cls.getName() + INSERT, t);
+				num++;
+				if (count == num) {
+					sqlSession.commit();
+					num = 0;
+				}
+			}
+			
+			sqlSession.commit();
+		} catch (Exception e) {
+			if (sqlSession != null) {
+				sqlSession.rollback(true);
+			}
+			logger.error(e.getMessage(), e);
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+	}
+	
+	@Override
+	public int save(T obj) {
+		if (obj == null) {
+			throw new BusinessException(" object can't null!");
+		}
+		return sqlSessionTemplate.insert(obj.getClass().getName() + INSERT, obj);
+	}
+	
 	public void setInvokingMethod(Method invokingMethod) {
 		this.invokingMethod = invokingMethod;
 	}
-
-	@Override
-	public SqlSessionTemplate getCurSqlSessionTemplate() {	    
-		return sqlSessionTemplate;
-	}
-
+	
 	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
 		this.sqlSessionFactory = sqlSessionFactory;
 	}
-
+	
 	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
 		this.sqlSessionTemplate = sqlSessionTemplate;
 	}
-
- 
+	
+	public void setTarget(Object target) {
+		this.target = target;
+	}
+	
+	@Override
+	public void update(T obj) {
+		if (obj == null) {
+			throw new BusinessException(" object can't null!");
+		}
+		sqlSessionTemplate.update(obj.getClass().getName() + UPDATE, obj);
+	}
+	
+	@Override
+	public void updateBatch(Class<T> cls, List<T> domainList, Integer count) {
+		SqlSession sqlSession = null;
+		try {
+			if (domainList == null) {
+				return;
+			}
+			sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
+			int num = 0;
+			for (T t : domainList) {
+				sqlSession.update(cls.getName() + UPDATE, t);
+				num++;
+				if (count == num) {
+					sqlSession.commit();
+					num = 0;
+				}
+			}
+			sqlSession.commit();
+		} catch (Exception e) {
+			if (sqlSession != null) {
+				sqlSession.rollback(true);
+			}
+			logger.error(e.getMessage(), e);
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+	}
+	
 }
