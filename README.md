@@ -31,7 +31,14 @@
 - [mybatis学习笔记](http://legend2011.blog.51cto.com/3018495/888848)
 - [Spring，Struts的DTD验证](http://a123159521.iteye.com/blog/782198)
 - [我是这样认识注解和XML的](http://jinnianshilongnian.iteye.com/blog/1879910)
-## druid教程
+- [log4j的PatternLayout参数含义](http://blog.csdn.net/guoquanyou/article/details/5689652)
+### 动态数据源
+- []()
+- [Spring3 整合MyBatis3 配置多数据源 动态选择SqlSessionFactory](http://www.cnblogs.com/hoojo/archive/2013/10/22/dynamic_switch_sqlSessionfactory_muliteSqlSessionFactory.html)
+- [整合Mybatis实现动态数据源切换教程配置](http://www.zuidaima.com/share/1816310397144064.htm)
+- [多数据源动态切换的问题](http://blog.csdn.net/zl3450341/article/details/20150687)
+### druid教程
 - []()
 - [druid简单教程](http://blog.csdn.net/yunnysunny/article/details/8657095) 包含常见配置项说明
 - []()
+- [springdata jpa 1.7.0.RELEASE各种查询方法总结demo](http://www.zuidaima.com/share/2086915582987264.htm)

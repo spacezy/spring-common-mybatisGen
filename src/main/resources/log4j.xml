@@ -4,7 +4,7 @@
 	<appender name="myConsole" class="org.apache.log4j.ConsoleAppender">
 		<layout class="org.apache.log4j.PatternLayout">
 		 	<param name="ConversionPattern"  
-		  		value="[%d{HH:mm:ss,SSS\} %-5p] [%t] %c{2\}[%L] %m%n" />
+		  		value="[%d{HH mm:ss,SSS} %-5p] [%t] %c{4}[%L] %m%n" />
 		</layout>
 		<!--过滤器设置输出的级别-->
 		<filter class="org.apache.log4j.varia.LevelRangeFilter">
@@ -33,36 +33,24 @@
 		</layout> 
 	</appender>
 	<!-- additivity指示是否遵循缺省的继承机制-->
-	<logger name="cn.org.rapid_framework" additivity="false" >
+	<logger name="cn.shaolingweb.demo.curd.service" additivity="false" >
 		<level value="debug" /><!-- 是level不是priority -->
 		<appender-ref ref="myConsole" /> 
 	</logger>
 	<!-- MyBatis打印SQL日志 -->
-	<logger name="com.ibatis" additivity="false">
+	<logger name="org.mybatis.spring.SqlSessionUtils" additivity="false">
 		<level value="debug" />
 		<appender-ref ref="myConsole" /> 
 	</logger>
-	<logger name="com.ibatis.common.jdbc.SimpleDataSource" additivity="false">
+	<logger name="org.springframework.jdbc.datasource.DataSourceUtils" additivity="false">
 		<level value="debug" />
 		<appender-ref ref="myConsole" /> 
 	</logger>
-	<logger name="com.ibatis.common.jdbc.ScriptRunner" additivity="false">
+	<logger name="org.mybatis.spring.transaction" additivity="false">
 		<level value="debug" />
 		<appender-ref ref="myConsole" /> 
 	</logger>
-	<logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" additivity="false">
-		<level value="debug" />
-		<appender-ref ref="myConsole" /> 
-	</logger>
-	<logger name="java.sql.Connection" additivity="false">
-		<level value="debug" />
-		<appender-ref ref="myConsole" /> 
-	</logger>
-	<logger name="java.sql.Statement" additivity="false">
-		<level value="debug" />
-		<appender-ref ref="myConsole" /> 
-	</logger>
-	<logger name="java.sql.PreparedStatement" additivity="false">
+	<logger name="cn.shaolingweb.demo.curd.model" additivity="false">
 		<level value="debug" />
 		<appender-ref ref="myConsole" /> 
 	</logger>
