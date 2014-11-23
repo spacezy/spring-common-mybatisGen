@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.spring.mybatisGen</groupId>
 	<artifactId>spring-common-mybatisGen</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
 		<file.encoding>UTF-8</file.encoding>
@@ -76,6 +76,7 @@
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-catalina</artifactId>
+			<scope>provided</scope>
 			<version>7.0.57</version>
 		</dependency>
 		<!-- 基础设施 -->
@@ -103,7 +104,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
+			<artifactId>spring-oxm</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId> 
 			<version>${org.springframework.version}</version>
 		</dependency>
 	</dependencies>

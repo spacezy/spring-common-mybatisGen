@@ -11,6 +11,12 @@ import java.io.Serializable;
 public class User implements Serializable{
 	private java.lang.Integer id;
 	private java.lang.String name;
+	public User() {
+	}
+	public User(Integer id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 	/**
 	 * @return the id
 	 */
